@@ -22,6 +22,7 @@ public class APIMIntegrationConstants {
 
     //instance names
     public static final String AM_PRODUCT_GROUP_NAME = "APIM";
+    public static final String AM_DEFAULT_INSTANCE = "wso2am-default";
     public static final String AM_STORE_INSTANCE = "wso2am-api-store";
     public static final String AM_PUBLISHER_INSTANCE = "wso2am-api-publisher";
     public static final String AM_GATEWAY_MGT_INSTANCE = "wso2am-gateway-manager";

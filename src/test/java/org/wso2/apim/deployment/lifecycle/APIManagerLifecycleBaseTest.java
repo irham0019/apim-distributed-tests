@@ -23,7 +23,10 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.testng.ITestContext;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 import org.wso2.apim.base.APIMIntegrationBaseTest;
 import org.wso2.apim.bean.APICreationRequestBean;
 import org.wso2.apim.bean.APILifeCycleState;
@@ -74,6 +77,13 @@ public class APIManagerLifecycleBaseTest extends APIMIntegrationBaseTest {
     protected static final int THROTTLING_UNIT_TIME = 60000;
     protected static final int THROTTLING_ADDITIONAL_WAIT_TIME = 5000;
     //protected static String gatewayWebAppUrl;
+
+    @BeforeSuite(alwaysRun = true)
+    public void createEnvironment(ITestContext ctx)
+            throws APIManagerIntegrationTestException, IOException {
+        super.setTestSuite(ctx.getCurrentXmlTest().getSuite().getName());
+        //gatewayWebAppUrl = gatewayUrls.getWebAppURLNhttp();
+    }
 
     @BeforeClass(alwaysRun = true)
     public void init() throws APIManagerIntegrationTestException {
@@ -407,5 +417,11 @@ public class APIManagerLifecycleBaseTest extends APIMIntegrationBaseTest {
                 }
             }
         }
+    }
+
+    @AfterSuite(alwaysRun = true)
+    public void deleteEnvironment(ITestContext ctx)
+            throws APIManagerIntegrationTestException, IOException {
+        super.unSetTestSuite(ctx.getCurrentXmlTest().getSuite().getName());
     }
 }

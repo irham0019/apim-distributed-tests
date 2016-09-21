@@ -1,6 +1,6 @@
- #    wso2am-api-publisher: image: dockerhub.private.wso2.com/dimuthud-wso2-am-api-publisher tag:1.10.0
-     wso2am-api-store: image:dockerhub.private.wso2.com/dimuthud-wso2-am-api-store tag:1.10.0
- #    wso2am-gateway-manager: image: dockerhub.private.wso2.com/dimuthud-wso2-am-api-gateway tag:1.10.0
- #    wso2am-api-key-manager: image: dockerhub.private.wso2.com/dimuthud-wso2-am-api-keymanager tag:1.10.0
+     wso2am-api-publisher: image: dockerhub.private.wso2.com/iqbal-wso2-am-api-publisher tag:1.10.0
+     wso2am-api-store: image:dockerhub.private.wso2.com/iqbal-wso2-am-api-store tag:1.10.0
+     wso2am-gateway-manager: image: dockerhub.private.wso2.com/iqbal-wso2-am-api-gateway tag:1.10.0
+     wso2am-api-key-manager: image: dockerhub.private.wso2.com/iqbal-wso2-am-api-keymanager tag:1.10.0
 
 

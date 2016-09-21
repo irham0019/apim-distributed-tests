@@ -34,10 +34,12 @@ import org.wso2.carbon.automation.distributed.context.AutomationContext;
 import org.wso2.carbon.automation.distributed.context.TestUserMode;
 import org.wso2.carbon.automation.distributed.context.beans.User;
 import org.wso2.carbon.automation.distributed.frameworkutils.FrameworkPathUtil;
+import org.wso2.carbon.automation.distributed.utills.ScriptExecutorUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.integration.common.utils.LoginLogoutClient;
 import java.io.File;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import javax.xml.xpath.XPathExpressionException;
 
@@ -49,12 +51,12 @@ import javax.xml.xpath.XPathExpressionException;
 public class APIMIntegrationBaseTest {
 
     private static final Log log = LogFactory.getLog(APIMIntegrationBaseTest.class);
-    protected AutomationContext storeContext, publisherContext, keyManagerContext, gatewayContextMgt;
+    protected AutomationContext defaultContext, storeContext, publisherContext, keyManagerContext, gatewayContextMgt,
+            gatewayContextWrk, backEndServer;
     protected OMElement synapseConfiguration;
     protected TestUserMode userMode;
-    protected APIMURLBean storeUrls, publisherUrls, gatewayUrlsMgt, keyMangerUrl, backEndServerUrl;
+    protected APIMURLBean defaultUrls, storeUrls, publisherUrls, gatewayUrlsMgt, gatewayUrlsWrk, keyMangerUrl, backEndServerUrl;
     protected User user;
-
 
     /**
      * This method will initialize test environment
@@ -67,6 +69,17 @@ public class APIMIntegrationBaseTest {
         init(userMode);
     }
 
+
+    protected void setTestSuite(String testSuite) throws IOException {
+        ScriptExecutorUtil.deployScenario(testSuite);
+    }
+
+    protected void unSetTestSuite(String testSuite)
+            throws APIManagerIntegrationTestException, IOException {
+        ScriptExecutorUtil.unDeployScenario(testSuite);
+        //gatewayWebAppUrl = gatewayUrls.getWebAppURLNhttp();
+    }
+
     /**
      * init the object with user mode , create context objects and get session cookies
      *
@@ -77,36 +90,77 @@ public class APIMIntegrationBaseTest {
 
         try {
             //create store server instance based on configuration given at automation.xml
+
+            defaultContext =
+                    new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
+                                          APIMIntegrationConstants.AM_DEFAULT_INSTANCE, userMode);
+
+            try {
+                defaultUrls = new APIMURLBean(defaultContext.getContextUrls());
+            } catch (NoSuchElementException ex) {
+                // since default instance not available in the deployment
+            }
+
             storeContext =
                     new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
                                           APIMIntegrationConstants.AM_STORE_INSTANCE, userMode);
-            storeUrls = new APIMURLBean(storeContext.getContextUrls());
 
+            try {
+                storeUrls = new APIMURLBean(storeContext.getContextUrls());
+            } catch (NoSuchElementException ex) {
+                // since store instance not available in the deployment
+                storeUrls = defaultUrls;
+            }
             //create publisher server instance based on configuration given at automation.xml
             publisherContext =
                     new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
                                           APIMIntegrationConstants.AM_PUBLISHER_INSTANCE, userMode);
-            publisherUrls = new APIMURLBean(publisherContext.getContextUrls());
+            try {
+                publisherUrls = new APIMURLBean(publisherContext.getContextUrls());
+            } catch (NoSuchElementException ex) {
+                // since publisher instance not available in the deployment
+                publisherUrls = defaultUrls;
+            }
 
             //create gateway server instance based on configuration given at automation.xml
+
             gatewayContextMgt =
                     new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
                                           APIMIntegrationConstants.AM_GATEWAY_MGT_INSTANCE, userMode);
-            gatewayUrlsMgt = new APIMURLBean(gatewayContextMgt.getContextUrls());
 
-//            gatewayContextWrk =
-//                    new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
-//                                          APIMIntegrationConstants.AM_GATEWAY_WRK_INSTANCE, userMode);
-//            gatewayUrlsWrk = new APIMURLBean(gatewayContextWrk.getContextUrls());
+            try {
+                gatewayUrlsMgt = new APIMURLBean(gatewayContextMgt.getContextUrls());
+            } catch (NoSuchElementException ex) {
+                // since gateway mgt instance not available in the deployment
+                gatewayUrlsMgt = defaultUrls;
+            }
+            gatewayContextWrk =
+                    new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
+                                          APIMIntegrationConstants.AM_GATEWAY_WRK_INSTANCE, userMode);
+            try {
+                gatewayUrlsWrk = new APIMURLBean(gatewayContextWrk.getContextUrls());
+            } catch (NoSuchElementException ex) {
+                // since gateway wrk instance not available in the deployment
+                gatewayUrlsMgt = defaultUrls;
+            }
 
             keyManagerContext = new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
                                                       APIMIntegrationConstants.AM_KEY_MANAGER_INSTANCE, userMode);
-            keyMangerUrl = new APIMURLBean(keyManagerContext.getContextUrls());
+            try {
+                keyMangerUrl = new APIMURLBean(keyManagerContext.getContextUrls());
+            } catch (NoSuchElementException ex) {
+                // since keyManager instance not available in the deployment
+                gatewayUrlsMgt = defaultUrls;
+            }
 
-//            backEndServer = new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
-//                                                  APIMIntegrationConstants.BACKEND_SERVER_INSTANCE, userMode);
-//            backEndServerUrl = new APIMURLBean(backEndServer.getContextUrls());
-
+            backEndServer = new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
+                                                  APIMIntegrationConstants.BACKEND_SERVER_INSTANCE, userMode);
+            try {
+                backEndServerUrl = new APIMURLBean(backEndServer.getContextUrls());
+            } catch(NoSuchElementException ex){
+                // since backend instance not available in the deployment
+                backEndServerUrl = defaultUrls;
+            }
 
             user = storeContext.getContextTenant().getContextUser();
 
@@ -123,8 +177,8 @@ public class APIMIntegrationBaseTest {
      * init the object with tenant domain, user key and instance of store,publisher and gateway
      * create context objects and construct URL bean
      *
-     * @param domainKey         - tenant domain key
-     * @param userKey           - tenant user key
+     * @param domainKey - tenant domain key
+     * @param userKey   - tenant user key
      * @throws APIManagerIntegrationTestException - if test configuration init fails
      */
     protected void init(String domainKey, String userKey)
@@ -278,9 +332,11 @@ public class APIMIntegrationBaseTest {
     protected String getGatewayMgtURLHttp() {
         return gatewayUrlsMgt.getWebAppURLHttp();
     }
-    protected String getGatewayMgtBackendURLHttps()  {
+
+    protected String getGatewayMgtBackendURLHttps() {
         return gatewayUrlsMgt.getWebAppURLHttp();
     }
+
     protected String getGatewayMgtURLHttps() {
         return gatewayUrlsMgt.getWebAppURLHttps();
     }
@@ -303,12 +359,12 @@ public class APIMIntegrationBaseTest {
 
     protected String getAPIInvocationURLHttp(String apiContext)
             throws XPathExpressionException, IOException {
-        return gatewayContextMgt.getContextUrls().getServiceUrl().replace("/services", "") + "/" +apiContext;
+        return gatewayContextMgt.getContextUrls().getServiceUrl().replace("/services", "") + "/" + apiContext;
     }
 
     protected String getAPIInvocationURLHttp(String apiContext, String version)
             throws XPathExpressionException, IOException {
-        return gatewayContextMgt.getContextUrls().getServiceUrl().replace("/services", "") + "/" +apiContext + "/" + version;
+        return gatewayContextMgt.getContextUrls().getServiceUrl().replace("/services", "") + "/" + apiContext + "/" + version;
     }
 
     protected String getAPIInvocationURLHttps(String apiContext)
@@ -317,17 +373,18 @@ public class APIMIntegrationBaseTest {
     }
 
     protected String getBackendEndServiceEndPointHttp(String serviceName) {
-        return backEndServerUrl.getWebAppURLHttp()  + serviceName;
+        return backEndServerUrl.getWebAppURLHttp() + serviceName;
     }
 
     protected String getBackendEndServiceEndPointHttps(String serviceName) {
-        return backEndServerUrl.getWebAppURLHttps()  + serviceName;
+        return backEndServerUrl.getWebAppURLHttps() + serviceName;
     }
 
     /**
      * Cleaning up the API manager by removing all APIs and applications other than default application
+     *
      * @throws APIManagerIntegrationTestException - occurred when calling the apis
-     * @throws org.json.JSONException                      - occurred when reading the json
+     * @throws org.json.JSONException             - occurred when reading the json
      */
     protected void cleanUp() throws Exception {
 
@@ -339,7 +396,7 @@ public class APIMIntegrationBaseTest {
         verifyResponse(subscriptionDataResponse);
         JSONObject jsonSubscription = new JSONObject(subscriptionDataResponse.getData());
 
-        if(!jsonSubscription.getBoolean(APIMIntegrationConstants.API_RESPONSE_ELEMENT_NAME_ERROR)) {
+        if (!jsonSubscription.getBoolean(APIMIntegrationConstants.API_RESPONSE_ELEMENT_NAME_ERROR)) {
             JSONObject jsonSubscriptionsObject = jsonSubscription.getJSONObject(APIMIntegrationConstants.API_RESPONSE_ELEMENT_NAME_SUBSCRIPTION);
             JSONArray jsonApplicationsArray = jsonSubscriptionsObject.getJSONArray(APIMIntegrationConstants.API_RESPONSE_ELEMENT_NAME_APPLICATIONS);
 

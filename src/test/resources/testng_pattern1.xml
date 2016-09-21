@@ -19,7 +19,7 @@
 
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="ApiManager-features-test-suite">
+<suite name="pattern1">
     <parameter name="useDefaultListeners" value="false"/>
 
     <test name="rest-api-tests" preserve-order="true" parallel="false">
@@ -47,7 +47,7 @@
 
     </test>
 
-    <test name="apim-integration-tests-api-lifecycle" preserve-order="true" parallel="false">
+    <test name="lifecycle-pattern1" preserve-order="true" parallel="false">
 
         <classes>
         <!--<class name="org.wso2.apim.deployment.lifecycle.AccessibilityOfOldAPIAndCopyAPIWithReSubscriptionTestCase"/>-->

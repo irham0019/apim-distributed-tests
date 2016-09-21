@@ -22,6 +22,7 @@ import junit.framework.Assert;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -64,7 +65,7 @@ public class APICreationInvocationTestCase extends APIMIntegrationBaseTest {
     }
 
     @BeforeClass(alwaysRun = true)
-    public void setEnvironment() throws Exception {
+    public void setEnvironment(ITestContext ctx) throws Exception {
         super.init(userMode);
         String publisherURLHttp = getPublisherURLHttp();
         String storeURLHttp = getStoreURLHttp();
