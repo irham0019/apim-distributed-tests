@@ -226,6 +226,20 @@
         -->
         <productGroup name="APIM" clusteringEnabled="false" default="true">
             <!--configuration of APIM Store instance -->
+
+            <instance name="wso2am-default" type="standalone" nonBlockingTransportEnabled="false">
+                <hosts>
+                    <host type="default">localhost</host>
+                </hosts>
+                <ports>
+                    <port type="nhttp">32001</port>
+                    <port type="nhttps">32002</port>
+                    <port type="http">32003</port>
+                    <port type="https">32004</port>
+                </ports>
+                <properties>
+                </properties>
+            </instance>
             <instance name="wso2am-api-store" type="standalone" nonBlockingTransportEnabled="false">
                 <hosts>
                     <host type="default">192.168.57.235</host>
@@ -314,9 +328,9 @@
                     <!--<name>org.wso2.carbon.integration.common.extensions.usermgt.UserPopulateExtension</name>-->
                 <!--</class>-->
 
-                <!--<class>-->
-                    <!--<name>org.wso2.carbon.automation.distributed.extentions.DistributedPlatformExtension</name>-->
-                <!--</class>-->
+                <class>
+                    <name>org.wso2.carbon.automation.distributed.extentions.DistributedPlatformExtension</name>
+                </class>
             </extentionClasses>
         </platformExecutionManager>
 
