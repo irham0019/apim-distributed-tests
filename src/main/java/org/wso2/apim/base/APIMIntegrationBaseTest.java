@@ -141,7 +141,7 @@ public class APIMIntegrationBaseTest {
                 gatewayUrlsWrk = new APIMURLBean(gatewayContextWrk.getContextUrls());
             } catch (NoSuchElementException ex) {
                 // since gateway wrk instance not available in the deployment
-                gatewayUrlsMgt = defaultUrls;
+                gatewayUrlsWrk = defaultUrls;
             }
 
             keyManagerContext = new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
@@ -150,7 +150,7 @@ public class APIMIntegrationBaseTest {
                 keyMangerUrl = new APIMURLBean(keyManagerContext.getContextUrls());
             } catch (NoSuchElementException ex) {
                 // since keyManager instance not available in the deployment
-                gatewayUrlsMgt = defaultUrls;
+                keyMangerUrl = defaultUrls;
             }
 
             backEndServer = new AutomationContext(APIMIntegrationConstants.AM_PRODUCT_GROUP_NAME,
