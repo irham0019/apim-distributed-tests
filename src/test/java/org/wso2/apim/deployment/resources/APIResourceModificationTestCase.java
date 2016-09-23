@@ -29,7 +29,7 @@ import org.wso2.apim.bean.APILifeCycleState;
 import org.wso2.apim.bean.APILifeCycleStateRequest;
 import org.wso2.apim.bean.APIRequest;
 import org.wso2.apim.clients.APIPublisherRestClient;
-import org.wso2.carbon.automation.distributed.context.TestUserMode;
+import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import java.net.URL;
 

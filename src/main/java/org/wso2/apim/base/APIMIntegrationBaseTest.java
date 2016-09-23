@@ -30,11 +30,11 @@ import org.wso2.apim.bean.APIMURLBean;
 import org.wso2.apim.clients.APIPublisherRestClient;
 import org.wso2.apim.clients.APIStoreRestClient;
 import org.wso2.apim.exception.APIManagerIntegrationTestException;
-import org.wso2.carbon.automation.distributed.context.AutomationContext;
-import org.wso2.carbon.automation.distributed.context.TestUserMode;
-import org.wso2.carbon.automation.distributed.context.beans.User;
-import org.wso2.carbon.automation.distributed.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.distributed.utills.ScriptExecutorUtil;
+import org.wso2.carbon.automation.engine.context.AutomationContext;
+import org.wso2.carbon.automation.engine.context.TestUserMode;
+import org.wso2.carbon.automation.engine.context.beans.User;
+import org.wso2.carbon.automation.engine.frameworkutils.FrameworkPathUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import org.wso2.carbon.integration.common.utils.LoginLogoutClient;
 import java.io.File;
@@ -167,8 +167,6 @@ public class APIMIntegrationBaseTest {
         } catch (XPathExpressionException e) {
             log.error("APIM test environment initialization failed", e);
             throw new APIManagerIntegrationTestException("APIM test environment initialization failed", e);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
@@ -221,8 +219,6 @@ public class APIMIntegrationBaseTest {
         } catch (XPathExpressionException e) {
             log.error("Init failed", e);
             throw new APIManagerIntegrationTestException("APIM test environment initialization failed", e);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }

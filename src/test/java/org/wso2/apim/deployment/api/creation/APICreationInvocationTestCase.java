@@ -37,7 +37,7 @@ import org.wso2.apim.bean.APPKeyRequestGenerator;
 import org.wso2.apim.bean.SubscriptionRequest;
 import org.wso2.apim.clients.APIPublisherRestClient;
 import org.wso2.apim.clients.APIStoreRestClient;
-import org.wso2.carbon.automation.distributed.context.TestUserMode;
+import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.test.utils.http.client.HttpRequestUtil;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 import java.net.URL;

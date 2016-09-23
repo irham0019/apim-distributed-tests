@@ -27,7 +27,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import org.wso2.apim.base.APIMIntegrationBaseTest;
 import org.wso2.apim.clients.APIPublisherRestClient;
-import org.wso2.carbon.automation.distributed.context.TestUserMode;
+import org.wso2.carbon.automation.engine.context.TestUserMode;
 import org.wso2.carbon.automation.test.utils.http.client.HttpResponse;
 
 public class APIMANAGER2611EndpointValidationTestCase extends APIMIntegrationBaseTest {

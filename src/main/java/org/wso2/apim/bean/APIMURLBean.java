@@ -18,7 +18,8 @@
 
 package org.wso2.apim.bean;
 
-import org.wso2.carbon.automation.distributed.context.beans.ContextUrls;
+
+import org.wso2.carbon.automation.engine.context.beans.ContextUrls;
 
 /**
  * this class creates basic URLs that needs to be used
