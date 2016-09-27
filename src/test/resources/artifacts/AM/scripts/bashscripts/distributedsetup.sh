@@ -15,11 +15,11 @@ K8S_JACKSON_ANNOTATIONS_JAR=jackson-annotations-2.5.4.jar
 JDK=jdk-7u80-linux-x64.tar.gz
 FILE=$TEST_RESOURCE_LOCATION"/artifacts/AM/scripts/bashscripts/images.txt"
 
-password_encoded="Uml6bGEhMjMK"
+password_encoded="xxxxxxxxxx"
 password_decoded=$(echo "$password_encoded" | openssl enc -d -base64)
 
 dockerRegistryLogin(){
-  docker login --username=iqbal --email=iqbal@wso2.com --password=$password_decoded dockerhub.private.wso2.com
+  docker login --username=xxxxxxx --email=xxxxxxxx@wso2.com --password=$password_decoded dockerhub.private.wso2.com
 }
 
 # step 01
